@@ -17,17 +17,14 @@ function App() {
   const user = {name: "Asdf" ,auth : 1}
 
   useEffect(()=>{
-  axios.get('https://jsonplaceholder.typicode.com/posts')
+  axios.get('https://jsonplaceholder.typicode.com/photos')
   .then(response=>{
     setData(response.data);
 
   });
 },[]);
 
-useEffect(()=>{
 
-  console.log(data);
-},[]);
   return (
     <div className="App">
 

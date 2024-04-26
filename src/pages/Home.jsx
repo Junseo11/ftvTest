@@ -27,7 +27,7 @@ const Home = ({user,data}) =>{
      
      <div className='item_wrapper'>
         {data.map((it)=>{
-          console.log(it);
+
           return <ListItem {...it} key={it.id}/>       
         })}
 

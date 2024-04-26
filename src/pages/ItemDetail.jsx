@@ -20,6 +20,7 @@ const ItemDetail = () =>{
             <h2>{res.title}</h2>
             <h2>{res.body}</h2>
             <h2>{res.id}</h2>
+            <img style={{ width: '50px', height: 'auto' }} src={res.url} alt="이미지" />
         </div>
     )
 }
