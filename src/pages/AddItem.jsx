@@ -3,25 +3,10 @@ import { useState,useRef,useEffect } from "react";
 
 
 const AddItem = () =>{
-    const upload = useRef();
     const [imgFile, setImageFile] = useState([]);
-    const [data,setData] = useState({
-        name : "",
-        body : "",
-        img : []
-    });
+    const [name, setName] = useState("");
+    const [body, setBody] = useState("");
 
-    const onHandleChange = (e)=>{
-
-        const {name,value} = e.target;
-
-        setData(prev =>({
-            ...prev,
-            [name] : value,
-            img : imgFile
-        }));
-     
-    }
 
     const onFileChange = (e)=>{
         const imageLists = e.target.files;
@@ -31,38 +16,29 @@ const AddItem = () =>{
             const currentImageUrl = URL.createObjectURL(imageLists[i]);
             imageUrlLists.push(currentImageUrl);
           }
-
-   
-
         setImageFile(imageUrlLists);
-        
 
         console.log(`이미지 배열개수 ${imageUrlLists.length}`);
-
     }
 
-    useEffect(() => {
-        setData(prevData => ({
-            ...prevData,
-            img: imgFile
-        }));
-    
-    }, [imgFile]);
 
-    useEffect(() => {
-        console.log(`이미지 변동 ${data.img.length}`);
-    }, [data.img]);
-
-
+ 
     const onHandleSubmit = async()=>{
-        if(data.name.length<1){
+        if(name<1){
             alert("이름을 입력하세요");
         }
-        else if(data.body.length<1){
+        else if(body<1){
             alert("내용을 입력하세요");
         }
         else{
-            axios.post('https://my-json-server.typicode.com/typicode/demo/posts', data,{
+            const formData = new FormData();
+
+            formData.append('name',name);
+            formData.append("body", body);
+            formData.append('img',imgFile);
+
+
+            axios.post('https://my-json-server.typicode.com/typicode/demo/posts', formData,{
                 headers:{
                     'Content-Type' : 'multipart/form-data'
                 }
@@ -79,9 +55,9 @@ const AddItem = () =>{
         <div className="AddItem" >
 
 
-            <div>{"이름"}<input placeholder="이름을 입력하세요" name="name" onChange={onHandleChange}/></div>
-            <div>{"정보"}<input placeholder="정보를 입력하세요" name="body" onChange={onHandleChange}/></div>
-            <div>{"사진"}<input type="file" ref={upload} multiple onChange={onFileChange} />
+            <div>{"이름"}<input placeholder="이름을 입력하세요" name="name" onChange={(e)=>setName(e.target.value)}/></div>
+            <div>{"정보"}<input placeholder="정보를 입력하세요" name="body" onChange={(e)=>setBody(e.target.value)}/></div>
+            <div>{"사진"}<input type="file" multiple onChange={onFileChange} />
             { imgFile.map((it) => {
                     return (
                         <label>
